@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="g" x1="12" y1="12" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#10b981"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="32" cy="32" r="28" fill="white"/>
+  <circle cx="32" cy="32" r="24" fill="none" stroke="url(#g)" stroke-width="6"/>
+
+  <!-- North -->
+  <path d="M32 14 L40 24 L32 22 L24 24 Z" fill="url(#g)"/>
+
+  <!-- South -->
+  <path d="M32 50 L24 40 L32 42 L40 40 Z" fill="url(#g)"/>
+
+  <!-- West -->
+  <path d="M14 32 L24 24 L22 32 L24 40 Z" fill="url(#g)"/>
+
+  <!-- East -->
+  <path d="M50 32 L40 24 L42 32 L40 40 Z" fill="url(#g)"/>
+</svg>
