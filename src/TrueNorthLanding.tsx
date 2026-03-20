@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import utahSunset from "./assets/utahSunset.jpg";
 import logo from "./assets/transparent_logo_notext.png";
 import boardwalk from "./assets/boardwalk.jpg";
 import piersunset from "./assets/piersunset.jpg";
