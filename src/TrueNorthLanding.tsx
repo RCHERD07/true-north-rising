@@ -115,12 +115,19 @@ function Carousel({ images = SAMPLE_IMAGES }: { images?: { src: string; alt: str
       >
         <div className="relative h-[220px] sm:h-[260px] md:h-[350px]">
           <AnimatePresence mode="wait">
-            <motion.button
+            <motion.div
               key={current?.src}
-              type="button"
               className="absolute inset-0 h-full w-full"
               onClick={() => setExpanded(true)}
+              role="button"
+              tabIndex={0}
               aria-label="Open image"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setExpanded(true);
+                }
+              }}
               initial={{ opacity: 0, scale: 1.01 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.99 }}
@@ -142,19 +149,22 @@ function Carousel({ images = SAMPLE_IMAGES }: { images?: { src: string; alt: str
                   </p>
 
                   <div className="mt-3 flex max-w-[220px] flex-col gap-2 sm:max-w-none sm:flex-row md:mt-5 md:gap-3">
-                    <Button className="w-full rounded-xl bg-blue-400 text-slate-900 hover:bg-blue-300 sm:w-auto">
+                    <Button className="w-full rounded-xl bg-blue-400 text-slate-900 hover:bg-blue-300 sm:w-auto"
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       Get started
                     </Button>
                     <Button
                       variant="outline"
                       className="w-full rounded-xl border-white/70 bg-white/10 text-white hover:bg-white/20 sm:w-auto"
+                      onClick={(e) => e.stopPropagation()}
                     >
                       See services
                     </Button>
                   </div>
                 </div>
               </div>
-            </motion.button>
+            </motion.div>
           </AnimatePresence>
 
           <div className="absolute inset-x-0 top-0 flex items-start justify-between p-3 md:p-5">
