@@ -285,6 +285,8 @@ export default function TrueNorthLanding() {
 
   const businessPhoneDisplay = "(442) 888-4419";
   const businessPhoneHref = "tel:+14428884419";
+  const businessEmail = "truenorthrisingsc@gmail.com";
+  const businessEmailHref = "mailto:truenorthrisingsc@gmail.com?subject=True%20North%20Rising%20Inquiry";
 
   const handleCallClick = () => {
     if (window.matchMedia("(max-width: 767px)").matches) {
@@ -321,7 +323,7 @@ export default function TrueNorthLanding() {
                   Contact
                 </a>
                 <Button className="rounded-xl bg-slate-900 text-white hover:bg-slate-800" onClick={handleCallClick}>
-                  Request a call
+                  Call us
                 </Button>
               </div>
 
@@ -541,10 +543,13 @@ export default function TrueNorthLanding() {
                       <Phone className="mr-2 h-4 w-4" />
                       Call
                     </Button>
-                    <Button variant="outline" className="rounded-xl border-slate-300">
+                    <a
+                      href={businessEmailHref}
+                      className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition hover:bg-slate-50"
+                    >
                       <Mail className="mr-2 h-4 w-4" />
                       Email
-                    </Button>
+                    </a>
                   </div>
                 </div>
 
