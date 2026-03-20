@@ -113,7 +113,7 @@ function Carousel({ images = SAMPLE_IMAGES }: { images?: { src: string; alt: str
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
-        <div className="relative h-[140px] md:h-[350px]">
+        <div className="relative h-[220px] sm:h-[260px] md:h-[350px]">
           <AnimatePresence mode="wait">
             <motion.button
               key={current?.src}
@@ -127,26 +127,27 @@ function Carousel({ images = SAMPLE_IMAGES }: { images?: { src: string; alt: str
               transition={{ duration: 0.35, ease: "easeOut" }}
             >
               <img src={current?.src} alt={current?.alt} className="h-full w-full object-cover" loading="lazy" />
-              <div className="absolute inset-0 bg-gradient-to-r from-slate-950/50 via-slate-950/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-slate-950/45 via-slate-950/20 to-transparent" />
 
-              <div className="absolute inset-x-0 bottom-0 p-6 text-left md:p-10">
-                <div className="max-w-2xl">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-white/85 px-3 py-1 text-xs font-medium text-slate-700 shadow-sm">
-                    <Sparkles className="h-4 w-4 text-emerald-600" />
+              <div className="absolute inset-x-0 bottom-0 p-3 text-left sm:p-4 md:p-10">
+                <div className="max-w-[72%] sm:max-w-[65%] md:max-w-2xl">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-white/85 px-2.5 py-1 text-[11px] font-medium text-slate-700 shadow-sm sm:px-3 sm:text-xs">
+                    <Sparkles className="h-3.5 w-3.5 text-emerald-600 sm:h-4 sm:w-4" />
                     Customer Moments
                   </div>
-                  <h1 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">
-                   
-                  </h1>
-                  <p className="mt-3 max-w-xl text-sm text-white/90 md:text-base">
+
+                  <p className="mt-2 max-w-xs text-[11px] leading-4 text-white/90 sm:text-xs sm:leading-5 md:mt-3 md:max-w-xl md:text-base">
                     True North Rising provides dependable in-home and community-based support with dignity,
                     consistency, and real-life focus.
                   </p>
-                  <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-                    <Button className="rounded-xl bg-blue-400 text-slate-900 hover:bg-slate-100">Get started</Button>
+
+                  <div className="mt-3 flex max-w-[220px] flex-col gap-2 sm:max-w-none sm:flex-row md:mt-5 md:gap-3">
+                    <Button className="w-full rounded-xl bg-blue-400 text-slate-900 hover:bg-blue-300 sm:w-auto">
+                      Get started
+                    </Button>
                     <Button
                       variant="outline"
-                      className="rounded-xl border-white/70 bg-white/10 text-white hover:bg-white/20"
+                      className="w-full rounded-xl border-white/70 bg-white/10 text-white hover:bg-white/20 sm:w-auto"
                     >
                       See services
                     </Button>
@@ -156,8 +157,8 @@ function Carousel({ images = SAMPLE_IMAGES }: { images?: { src: string; alt: str
             </motion.button>
           </AnimatePresence>
 
-          <div className="absolute left-0 right-0 top-0 flex items-center justify-between p-4 md:p-5">
-            <div className="rounded-full bg-white/85 px-3 py-1.5 text-xs text-slate-700 shadow-sm">
+          <div className="absolute inset-x-0 top-0 flex items-start justify-between p-3 md:p-5">
+            <div className="rounded-full bg-white/85 px-2.5 py-1 text-[11px] text-slate-700 shadow-sm sm:px-3 sm:py-1.5 sm:text-xs">
               {safeIndex + 1} / {images.length}
             </div>
 
@@ -165,7 +166,7 @@ function Carousel({ images = SAMPLE_IMAGES }: { images?: { src: string; alt: str
               <Button
                 variant="secondary"
                 size="icon"
-                className="bg-white/85 hover:bg-white"
+                className="h-9 w-9 rounded-2xl bg-white/85 hover:bg-white md:h-10 md:w-10 md:rounded-full"
                 onClick={goPrev}
                 aria-label="Previous image"
               >
@@ -174,7 +175,7 @@ function Carousel({ images = SAMPLE_IMAGES }: { images?: { src: string; alt: str
               <Button
                 variant="secondary"
                 size="icon"
-                className="bg-white/85 hover:bg-white"
+                className="h-9 w-9 rounded-2xl bg-white/85 hover:bg-white md:h-10 md:w-10 md:rounded-full"
                 onClick={goNext}
                 aria-label="Next image"
               >
@@ -183,13 +184,15 @@ function Carousel({ images = SAMPLE_IMAGES }: { images?: { src: string; alt: str
             </div>
           </div>
 
-          <div className="absolute bottom-4 right-4 flex gap-1.5 md:bottom-5 md:right-5">
+          <div className="absolute bottom-3 right-3 flex gap-1.5 md:bottom-5 md:right-5">
             {images.map((_, i) => {
               const active = i === safeIndex;
               return (
                 <button
                   key={i}
-                  className={`h-2.5 rounded-full transition-all ${active ? "w-6 bg-white" : "w-2.5 bg-white/60 hover:bg-white"}`}
+                  className={`h-2.5 rounded-full transition-all ${
+                    active ? "w-6 bg-white" : "w-2.5 bg-white/60 hover:bg-white"
+                  }`}
                   onClick={() => setIndex(i)}
                   aria-label={`Go to image ${i + 1}`}
                 />
