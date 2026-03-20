@@ -285,7 +285,6 @@ export default function TrueNorthLanding() {
 
   const businessPhoneDisplay = "(442) 888-4419";
   const businessPhoneHref = "tel:+14428884419";
-  const businessEmail = "truenorthrisingsc@gmail.com";
   const businessEmailHref = "mailto:truenorthrisingsc@gmail.com?subject=True%20North%20Rising%20Inquiry";
 
   const handleCallClick = () => {
