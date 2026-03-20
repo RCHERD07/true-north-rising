@@ -271,6 +271,19 @@ function Carousel({ images = SAMPLE_IMAGES }: { images?: { src: string; alt: str
 
 export default function TrueNorthLanding() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showCallPopup, setShowCallPopup] = useState(false);
+
+  const businessPhoneDisplay = "(442) 888-4419";
+  const businessPhoneHref = "tel:+14428884419";
+
+  const handleBottomCallClick = () => {
+    if (window.matchMedia("(max-width: 767px)").matches) {
+      window.location.href = businessPhoneHref;
+    } else {
+      setShowCallPopup(true);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white text-slate-900">
       <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/95 backdrop-blur">
@@ -346,7 +359,6 @@ export default function TrueNorthLanding() {
         </div>
       </header>
 
-
       <main>
         <section className="mx-auto max-w-6xl px-4 pt-6 md:pt-8">
           <Carousel />
@@ -357,16 +369,23 @@ export default function TrueNorthLanding() {
             <div className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">About</div>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
               Real support for lives of purpose and —
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-emerald-600"> adventure </span>
+              <span className="bg-gradient-to-r from-blue-700 to-emerald-600 bg-clip-text text-transparent">
+                {" "}
+                adventure{" "}
+              </span>
             </h2>
             <p className="mt-5 text-base leading-7 text-slate-600">
-              Personalized in-home support and community-based day programming designed to help people access the same everyday opportunities most of us take for granted.
+              Personalized in-home support and community-based day programming designed to help people access the same
+              everyday opportunities most of us take for granted.
             </p>
             <p className="mt-4 text-base leading-7 text-slate-600">
-              We provide personalized in-home support and community-based day programming designed to help people build meaningful routines, stronger independence, and fuller access to everyday life. Our approach is centered on dignity, purpose, connection, and the belief that everyone deserves the opportunity to live a rich and engaging life.
+              We provide personalized in-home support and community-based day programming designed to help people build
+              meaningful routines, stronger independence, and fuller access to everyday life. Our approach is centered
+              on dignity, purpose, connection, and the belief that everyone deserves the opportunity to live a rich and
+              engaging life.
             </p>
 
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 text-left">
+            <div className="mt-8 grid gap-4 text-left sm:grid-cols-2">
               <div className="flex items-start gap-3">
                 <div className="mt-0.5 grid h-10 w-10 place-items-center rounded-full bg-sky-50 text-sky-700">
                   <Shield className="h-5 w-5" />
@@ -394,11 +413,10 @@ export default function TrueNorthLanding() {
           <div className="mx-auto max-w-6xl px-4 py-14 md:py-20">
             <div className="text-center">
               <div className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">Services</div>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
-                How we help
-              </h2>
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">How we help</h2>
               <p className="mx-auto mt-4 max-w-2xl text-base text-slate-600">
-                Personalized services shaped around real needs, routines, and goals with thoughtful support tailored to each person’s daily life and independence.
+                Personalized services shaped around real needs, routines, and goals with thoughtful support tailored to
+                each person’s daily life and independence.
               </p>
             </div>
 
@@ -504,12 +522,15 @@ export default function TrueNorthLanding() {
                     Let’s talk about the right support
                   </h2>
                   <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
-                    Reach out and share what kind of support you are looking for. We can help you figure out what
-                    makes the most sense.
+                    Reach out and share what kind of support you are looking for. We can help you figure out what makes
+                    the most sense.
                   </p>
 
                   <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                    <Button className="rounded-xl bg-slate-900 text-white hover:bg-slate-800">
+                    <Button
+                      className="rounded-xl bg-slate-900 text-white hover:bg-slate-800"
+                      onClick={handleBottomCallClick}
+                    >
                       <Phone className="mr-2 h-4 w-4" />
                       Call
                     </Button>
@@ -523,7 +544,7 @@ export default function TrueNorthLanding() {
                 <div className="grid gap-4">
                   <div className="flex items-center gap-3 rounded-2xl border border-slate-200/70 p-4">
                     <Phone className="h-4 w-4 text-emerald-600" />
-                    <span className="text-sm text-slate-700">(442) 888-4419</span>
+                    <span className="text-sm text-slate-700">{businessPhoneDisplay}</span>
                   </div>
 
                   <div className="flex items-center gap-3 rounded-2xl border border-slate-200/70 p-4">
@@ -555,6 +576,76 @@ export default function TrueNorthLanding() {
           </div>
         </div>
       </footer>
+
+      <AnimatePresence>
+        {showCallPopup && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowCallPopup(false)}
+          >
+            <motion.div
+              className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl"
+              initial={{ opacity: 0, scale: 0.96, y: 8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.98, y: 4 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Call True North Rising"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <div className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">Call Us</div>
+                  <h3 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
+                    We’d love to hear from you
+                  </h3>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setShowCallPopup(false)}
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+                  aria-label="Close"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              <p className="mt-4 text-sm leading-6 text-slate-600">
+                Please give us a call at the number below. We’ll be happy to talk through your needs and answer any
+                questions.
+              </p>
+
+              <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center">
+                <div className="text-sm text-slate-500">Business phone</div>
+                <div className="mt-1 text-2xl font-semibold tracking-tight text-slate-900">{businessPhoneDisplay}</div>
+              </div>
+
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <a
+                  href={businessPhoneHref}
+                  className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
+                >
+                  <Phone className="mr-2 h-4 w-4" />
+                  Call from this device
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => setShowCallPopup(false)}
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition hover:bg-slate-50"
+                >
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
