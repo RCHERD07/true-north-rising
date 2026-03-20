@@ -276,7 +276,7 @@ export default function TrueNorthLanding() {
   const businessPhoneDisplay = "(442) 888-4419";
   const businessPhoneHref = "tel:+14428884419";
 
-  const handleBottomCallClick = () => {
+  const handleCallClick = () => {
     if (window.matchMedia("(max-width: 767px)").matches) {
       window.location.href = businessPhoneHref;
     } else {
@@ -310,12 +310,12 @@ export default function TrueNorthLanding() {
                 <a href="#contact" className="text-sm text-slate-700 hover:text-slate-900">
                   Contact
                 </a>
-                <Button className="rounded-xl bg-slate-900 text-white hover:bg-slate-800">
+                <Button className="rounded-xl bg-slate-900 text-white hover:bg-slate-800" onClick={handleCallClick}>
                   Request a call
                 </Button>
               </div>
 
-              <Button className="rounded-xl bg-slate-900 px-4 py-2 text-white hover:bg-slate-800 md:hidden">
+              <Button className="rounded-xl bg-slate-900 px-4 py-2 text-white hover:bg-slate-800 md:hidden" onClick={handleCallClick}>
                 Call
               </Button>
 
@@ -527,10 +527,7 @@ export default function TrueNorthLanding() {
                   </p>
 
                   <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                    <Button
-                      className="rounded-xl bg-slate-900 text-white hover:bg-slate-800"
-                      onClick={handleBottomCallClick}
-                    >
+                    <Button className="rounded-xl bg-slate-900 text-white hover:bg-slate-800" onClick={handleCallClick}>
                       <Phone className="mr-2 h-4 w-4" />
                       Call
                     </Button>
