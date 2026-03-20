@@ -3,5 +3,5 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/true-north-rising/",
+  base: process.env.NETLIFY === "true" ? "/" : "/true-north-rising/",
 });
