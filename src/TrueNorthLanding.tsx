@@ -16,6 +16,7 @@ import {
   MapPin,
   X,
   Sparkles,
+  Menu,
 } from "lucide-react";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -266,38 +267,82 @@ function Carousel({ images = SAMPLE_IMAGES }: { images?: { src: string; alt: str
 }
 
 export default function TrueNorthLanding() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
     <div className="min-h-screen bg-white text-slate-900">
       <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-3">
-            <div className="grid h-16 w-16 place-items-center">
-              <img src={logo} alt="True North Rising Logo" className="h-full w-full object-contain" />
+        <div className="mx-auto max-w-6xl px-4 py-3">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="grid h-14 w-14 shrink-0 place-items-center md:h-16 md:w-16">
+                <img src={logo} alt="True North Rising Logo" className="h-full w-full object-contain" />
+              </div>
+              <div className="min-w-0">
+                <div className="truncate text-sm text-slate-600 md:text-base">True North Rising</div>
+                <div className="-mt-0.5 text-xl font-semibold tracking-tight md:text-2xl">LLC</div>
+              </div>
             </div>
-            <div>
-              <div className="text-sm text-slate-600">True North Rising</div>
-              <div className="-mt-0.5 text-base font-semibold tracking-tight">LLC</div>
+
+            <div className="flex items-center gap-2">
+              <div className="hidden md:flex md:items-center md:gap-6">
+                <a href="#about" className="text-sm text-slate-700 hover:text-slate-900">
+                  About
+                </a>
+                <a href="#services" className="text-sm text-slate-700 hover:text-slate-900">
+                  Services
+                </a>
+                <a href="#contact" className="text-sm text-slate-700 hover:text-slate-900">
+                  Contact
+                </a>
+                <Button className="rounded-xl bg-slate-900 text-white hover:bg-slate-800">
+                  Request a call
+                </Button>
+              </div>
+
+              <Button className="rounded-xl bg-slate-900 px-4 py-2 text-white hover:bg-slate-800 md:hidden">
+                Call
+              </Button>
+
+              <button
+                type="button"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-slate-50 md:hidden"
+                onClick={() => setMobileMenuOpen((prev) => !prev)}
+                aria-label="Open menu"
+                aria-expanded={mobileMenuOpen}
+              >
+                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
             </div>
           </div>
 
-          <nav className="hidden items-center gap-6 md:flex">
-            <a href="#about" className="text-sm text-slate-700 hover:text-slate-900">
-              About
-            </a>
-            <a href="#services" className="text-sm text-slate-700 hover:text-slate-900">
-              Services
-            </a>
-            <a href="#contact" className="text-sm text-slate-700 hover:text-slate-900">
-              Contact
-            </a>
-            <Button className="rounded-xl bg-slate-900 text-white hover:bg-slate-800">Request a call</Button>
-          </nav>
-
-          <div className="md:hidden">
-            <Button className="rounded-xl bg-slate-900 text-white hover:bg-slate-800">Call</Button>
-          </div>
+          {mobileMenuOpen && (
+            <div className="mt-3 rounded-2xl border border-slate-200/70 bg-white p-2 shadow-lg md:hidden">
+              <a
+                href="#about"
+                className="block rounded-xl px-4 py-3 text-sm text-slate-700 hover:bg-slate-50"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                About
+              </a>
+              <a
+                href="#services"
+                className="block rounded-xl px-4 py-3 text-sm text-slate-700 hover:bg-slate-50"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Services
+              </a>
+              <a
+                href="#contact"
+                className="block rounded-xl px-4 py-3 text-sm text-slate-700 hover:bg-slate-50"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Contact
+              </a>
+            </div>
+          )}
         </div>
       </header>
+
 
       <main>
         <section className="mx-auto max-w-6xl px-4 pt-6 md:pt-8">
@@ -350,7 +395,7 @@ export default function TrueNorthLanding() {
                 How we help
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-base text-slate-600">
-                Flexible support designed around the person, not around a generic template.
+                Personalized services shaped around real needs, routines, and goals with thoughtful support tailored to each person’s daily life and independence.
               </p>
             </div>
 
