@@ -390,47 +390,58 @@ export default function TrueNorthLanding() {
   };
 
   const handleInquirySubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    setFormError("");
-    setFormSuccess("");
+  setFormError("");
+  setFormSuccess("");
 
-    const validationMessage = validateInquiryForm();
-    if (validationMessage) {
-      setFormError(validationMessage);
-      return;
-    }
+  const validationMessage = validateInquiryForm();
+  if (validationMessage) {
+    setFormError(validationMessage);
+    return;
+  }
+
+  try {
+    setIsSubmittingInquiry(true);
+
+    const response = await fetch("/.netlify/functions/submit-intake", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(inquiryForm),
+    });
+
+    const rawText = await response.text();
+    let data: any = {};
 
     try {
-      setIsSubmittingInquiry(true);
-
-      const response = await fetch("/.netlify/functions/submit-intake", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(inquiryForm),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data?.message || "Something went wrong while sending your request.");
-      }
-
-      setFormSuccess("Thank you for reaching out. We received your information and will be in touch soon.");
-      setInquiryForm(INITIAL_INQUIRY_FORM);
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "We could not send your request right now. Please try again or call us directly.";
-
-      setFormError(message);
-    } finally {
-      setIsSubmittingInquiry(false);
+      data = rawText ? JSON.parse(rawText) : {};
+    } catch {
+      data = {};
     }
-  };
+
+    if (!response.ok) {
+      throw new Error(
+        data?.message || `Request failed with status ${response.status}.`
+      );
+    }
+
+    setFormSuccess(
+      "Thank you for reaching out. We received your information and will be in touch soon."
+    );
+    setInquiryForm(INITIAL_INQUIRY_FORM);
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : "We could not send your request right now. Please try again or call us directly.";
+
+    setFormError(message);
+  } finally {
+    setIsSubmittingInquiry(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
