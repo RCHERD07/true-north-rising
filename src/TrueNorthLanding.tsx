@@ -766,15 +766,19 @@ export default function TrueNorthLanding() {
               aria-label="Tell us about your needs"
             >
               <div className="flex items-start justify-between gap-4">
-                <div>
-                  <div className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">Get Started</div>
-                  <h3 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
-                    Tell us about your needs
-                  </h3>
-                  <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-                    Share a little about your needs and we’ll reach out to learn how we can help.
-                  </p>
-                </div>
+                {!formSuccess ? (
+                  <div>
+                    <div className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">Get Started</div>
+                    <h3 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
+                      Tell us about your needs
+                    </h3>
+                    <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+                      Share a little about your needs and we’ll reach out to learn how we can help.
+                    </p>
+                  </div>
+                ) : (
+                  <div />
+                )}
 
                 <button
                   type="button"
