@@ -69,6 +69,42 @@ const SAMPLE_IMAGES = [
   },
 ];
 
+type InquiryFormData = {
+  fullName: string;
+  phone: string;
+  email: string;
+  location: string;
+  whoNeedsSupport: string;
+  potentialCustomerName: string;
+  servicesInterested: string[];
+  preferredContactMethod: string;
+  bestTimeToReach: string;
+  situation: string;
+  website: string;
+};
+
+const INITIAL_INQUIRY_FORM: InquiryFormData = {
+  fullName: "",
+  phone: "",
+  email: "",
+  location: "",
+  whoNeedsSupport: "",
+  potentialCustomerName: "",
+  servicesInterested: [],
+  preferredContactMethod: "",
+  bestTimeToReach: "",
+  situation: "",
+  website: "",
+};
+
+const SERVICE_OPTIONS = [
+  "In-home support",
+  "Day program",
+  "Community access",
+  "Tailored care",
+  "Not sure yet",
+];
+
 function clampIndex(idx: number, len: number) {
   if (len <= 0) return 0;
   return ((idx % len) + len) % len;
@@ -88,7 +124,13 @@ function useInterval(callback: () => void, delay: number | null) {
   }, [delay]);
 }
 
-function Carousel({ images = SAMPLE_IMAGES }: { images?: { src: string; alt: string; caption?: string }[] }) {
+function Carousel({
+  images = SAMPLE_IMAGES,
+  onGetStarted,
+}: {
+  images?: { src: string; alt: string; caption?: string }[];
+  onGetStarted?: () => void;
+}) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -149,8 +191,12 @@ function Carousel({ images = SAMPLE_IMAGES }: { images?: { src: string; alt: str
                   </p>
 
                   <div className="mt-3 flex max-w-[220px] flex-col gap-2 sm:max-w-none sm:flex-row md:mt-5 md:gap-3">
-                    <Button className="w-full rounded-xl bg-blue-400 text-slate-900 hover:bg-blue-300 sm:w-auto"
-                      onClick={(e) => e.stopPropagation()}
+                    <Button
+                      className="w-full rounded-xl bg-blue-400 text-slate-900 hover:bg-blue-300 sm:w-auto"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onGetStarted?.();
+                      }}
                     >
                       Get started
                     </Button>
@@ -282,6 +328,11 @@ function Carousel({ images = SAMPLE_IMAGES }: { images?: { src: string; alt: str
 export default function TrueNorthLanding() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showCallPopup, setShowCallPopup] = useState(false);
+  const [showInquiryPopup, setShowInquiryPopup] = useState(false);
+  const [inquiryForm, setInquiryForm] = useState<InquiryFormData>(INITIAL_INQUIRY_FORM);
+  const [formError, setFormError] = useState("");
+  const [formSuccess, setFormSuccess] = useState("");
+  const [isSubmittingInquiry, setIsSubmittingInquiry] = useState(false);
 
   const businessPhoneDisplay = "(442) 888-4419";
   const businessPhoneHref = "tel:+14428884419";
@@ -292,6 +343,92 @@ export default function TrueNorthLanding() {
       window.location.href = businessPhoneHref;
     } else {
       setShowCallPopup(true);
+    }
+  };
+
+  const openInquiryPopup = () => {
+    setFormError("");
+    setFormSuccess("");
+    setShowInquiryPopup(true);
+  };
+
+  const closeInquiryPopup = () => {
+    if (isSubmittingInquiry) return;
+    setShowInquiryPopup(false);
+  };
+
+  const updateInquiryField = (field: keyof InquiryFormData, value: string) => {
+    setInquiryForm((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const toggleServiceOption = (service: string) => {
+    setInquiryForm((prev) => {
+      const alreadySelected = prev.servicesInterested.includes(service);
+
+      return {
+        ...prev,
+        servicesInterested: alreadySelected
+          ? prev.servicesInterested.filter((item) => item !== service)
+          : [...prev.servicesInterested, service],
+      };
+    });
+  };
+
+  const validateInquiryForm = () => {
+    if (!inquiryForm.fullName.trim()) return "Please enter your name.";
+    if (!inquiryForm.phone.trim()) return "Please enter a phone number.";
+    if (!inquiryForm.email.trim()) return "Please enter an email address.";
+    if (!inquiryForm.location.trim()) return "Please enter your city or location.";
+    if (!inquiryForm.whoNeedsSupport.trim()) return "Please let us know who needs support.";
+    if (!inquiryForm.preferredContactMethod.trim()) return "Please select a preferred contact method.";
+    if (!inquiryForm.situation.trim()) return "Please share a little about your situation.";
+
+    return "";
+  };
+
+  const handleInquirySubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setFormError("");
+    setFormSuccess("");
+
+    const validationMessage = validateInquiryForm();
+    if (validationMessage) {
+      setFormError(validationMessage);
+      return;
+    }
+
+    try {
+      setIsSubmittingInquiry(true);
+
+      const response = await fetch("/.netlify/functions/submit-intake", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inquiryForm),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data?.message || "Something went wrong while sending your request.");
+      }
+
+      setFormSuccess("Thank you for reaching out. We received your information and will be in touch soon.");
+      setInquiryForm(INITIAL_INQUIRY_FORM);
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "We could not send your request right now. Please try again or call us directly.";
+
+      setFormError(message);
+    } finally {
+      setIsSubmittingInquiry(false);
     }
   };
 
@@ -326,7 +463,10 @@ export default function TrueNorthLanding() {
                 </Button>
               </div>
 
-              <Button className="rounded-xl bg-slate-900 px-4 py-2 text-white hover:bg-slate-800 md:hidden" onClick={handleCallClick}>
+              <Button
+                className="rounded-xl bg-slate-900 px-4 py-2 text-white hover:bg-slate-800 md:hidden"
+                onClick={handleCallClick}
+              >
                 Call
               </Button>
 
@@ -372,17 +512,17 @@ export default function TrueNorthLanding() {
 
       <main>
         <section className="mx-auto max-w-6xl px-4 pt-6 md:pt-8">
-          <Carousel />
+          <Carousel onGetStarted={openInquiryPopup} />
         </section>
 
         <section id="about" className="scroll-mt-20 mx-auto max-w-6xl px-4 py-14 md:py-20">
           <div className="mx-auto max-w-3xl text-center">
             <div className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">About</div>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
-              Real support for lives of purpose and —
+              Real support for lives of purpose and
               <span className="bg-gradient-to-r from-blue-700 to-emerald-600 bg-clip-text text-transparent">
                 {" "}
-                adventure{" "}
+                adventure
               </span>
             </h2>
             <p className="mt-5 text-base leading-7 text-slate-600">
@@ -538,10 +678,16 @@ export default function TrueNorthLanding() {
                   </p>
 
                   <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                    <Button className="rounded-xl bg-slate-900 text-white hover:bg-slate-800" onClick={openInquiryPopup}>
+                      <Sparkles className="mr-2 h-4 w-4" />
+                      Get started
+                    </Button>
+
                     <Button className="rounded-xl bg-slate-900 text-white hover:bg-slate-800" onClick={handleCallClick}>
                       <Phone className="mr-2 h-4 w-4" />
                       Call
                     </Button>
+
                     <a
                       href={businessEmailHref}
                       className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition hover:bg-slate-50"
@@ -587,6 +733,259 @@ export default function TrueNorthLanding() {
           </div>
         </div>
       </footer>
+
+      <AnimatePresence>
+        {showInquiryPopup && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeInquiryPopup}
+          >
+            <motion.div
+              className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl md:p-8"
+              initial={{ opacity: 0, scale: 0.96, y: 8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.98, y: 4 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Tell us about your needs"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <div className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">Get Started</div>
+                  <h3 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
+                    Tell us about your needs
+                  </h3>
+                  <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+                    Share a little about your needs and we’ll reach out to learn how we can help.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={closeInquiryPopup}
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+                  aria-label="Close"
+                  disabled={isSubmittingInquiry}
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              {formSuccess ? (
+                <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 text-emerald-600" />
+                    <div>
+                      <div className="font-semibold text-emerald-900">Request received</div>
+                      <p className="mt-1 text-sm leading-6 text-emerald-800">{formSuccess}</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-5">
+                    <Button
+                      type="button"
+                      className="rounded-xl bg-slate-900 text-white hover:bg-slate-800"
+                      onClick={closeInquiryPopup}
+                    >
+                      Close
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <form className="mt-6" onSubmit={handleInquirySubmit}>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-slate-700">Full name *</label>
+                      <input
+                        type="text"
+                        value={inquiryForm.fullName}
+                        onChange={(e) => updateInquiryField("fullName", e.target.value)}
+                        className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                        placeholder="Your name"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-slate-700">Phone number *</label>
+                      <input
+                        type="tel"
+                        value={inquiryForm.phone}
+                        onChange={(e) => updateInquiryField("phone", e.target.value)}
+                        className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                        placeholder="(555) 555-5555"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-slate-700">Email *</label>
+                      <input
+                        type="email"
+                        value={inquiryForm.email}
+                        onChange={(e) => updateInquiryField("email", e.target.value)}
+                        className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                        placeholder="you@example.com"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-slate-700">City / location *</label>
+                      <input
+                        type="text"
+                        value={inquiryForm.location}
+                        onChange={(e) => updateInquiryField("location", e.target.value)}
+                        className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                        placeholder="City, area, or region"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-slate-700">Who needs support? *</label>
+                      <select
+                        value={inquiryForm.whoNeedsSupport}
+                        onChange={(e) => updateInquiryField("whoNeedsSupport", e.target.value)}
+                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                      >
+                        <option value="">Select one</option>
+                        <option value="Self">Self</option>
+                        <option value="Child">Child</option>
+                        <option value="Adult family member">Adult family member</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-slate-700">Potential customer name</label>
+                      <input
+                        type="text"
+                        value={inquiryForm.potentialCustomerName}
+                        onChange={(e) => updateInquiryField("potentialCustomerName", e.target.value)}
+                        className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                        placeholder="Optional"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-slate-700">
+                        Preferred contact method *
+                      </label>
+                      <select
+                        value={inquiryForm.preferredContactMethod}
+                        onChange={(e) => updateInquiryField("preferredContactMethod", e.target.value)}
+                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                      >
+                        <option value="">Select one</option>
+                        <option value="Call">Call</option>
+                        <option value="Text">Text</option>
+                        <option value="Email">Email</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-slate-700">Best time to reach you</label>
+                      <input
+                        type="text"
+                        value={inquiryForm.bestTimeToReach}
+                        onChange={(e) => updateInquiryField("bestTimeToReach", e.target.value)}
+                        className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                        placeholder="Morning, afternoons, weekdays, etc."
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mt-5">
+                    <label className="mb-3 block text-sm font-medium text-slate-700">Services of interest</label>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {SERVICE_OPTIONS.map((service) => {
+                        const checked = inquiryForm.servicesInterested.includes(service);
+
+                        return (
+                          <label
+                            key={service}
+                            className="flex cursor-pointer items-center gap-3 rounded-2xl border border-slate-200 p-4 text-sm text-slate-700 transition hover:bg-slate-50"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={checked}
+                              onChange={() => toggleServiceOption(service)}
+                              className="h-4 w-4 rounded border-slate-300"
+                            />
+                            <span>{service}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="mt-5">
+                    <label className="mb-2 block text-sm font-medium text-slate-700">
+                      Tell us about your situation *
+                    </label>
+                    <textarea
+                      value={inquiryForm.situation}
+                      onChange={(e) => updateInquiryField("situation", e.target.value)}
+                      rows={5}
+                      className="w-full rounded-2xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                      placeholder="Share a little about the kind of support you are looking for."
+                    />
+                  </div>
+
+                  <div className="hidden">
+                    <label htmlFor="website">Website</label>
+                    <input
+                      id="website"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={inquiryForm.website}
+                      onChange={(e) => updateInquiryField("website", e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    <div className="flex items-start gap-3">
+                      <Shield className="mt-0.5 h-5 w-5 text-slate-600" />
+                      <p className="text-sm leading-6 text-slate-600">
+                        For your privacy, please do not include Social Security numbers, insurance details, medical
+                        diagnoses, or other highly sensitive personal information in this form.
+                      </p>
+                    </div>
+                  </div>
+
+                  {formError && (
+                    <div className="mt-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                      {formError}
+                    </div>
+                  )}
+
+                  <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                    <Button
+                      type="submit"
+                      className="rounded-xl bg-slate-900 text-white hover:bg-slate-800"
+                      disabled={isSubmittingInquiry}
+                    >
+                      {isSubmittingInquiry ? "Sending..." : "Submit"}
+                    </Button>
+
+                    <button
+                      type="button"
+                      onClick={closeInquiryPopup}
+                      className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition hover:bg-slate-50"
+                      disabled={isSubmittingInquiry}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {showCallPopup && (
