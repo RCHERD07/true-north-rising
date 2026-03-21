@@ -405,7 +405,7 @@ export default function TrueNorthLanding() {
     try {
       setIsSubmittingInquiry(true);
 
-      const response = await fetch("/api/submit-intake", {
+      const response = await fetch("/.netlify/functions/submit-intake", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -441,7 +441,8 @@ export default function TrueNorthLanding() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100">
+    <div className="dark min-h-screen bg-slate-950 text-slate-100 transition-colors">
+    {/* device based light/dark mode <div className="min-h-screen bg-white text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100"> */}
       <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/95 backdrop-blur transition-colors dark:border-slate-800 dark:bg-slate-950/90">
         <div className="mx-auto max-w-6xl px-4 py-3">
           <div className="flex items-center justify-between gap-4">
@@ -450,7 +451,7 @@ export default function TrueNorthLanding() {
                 src={headerLogo}
                 alt="True North Rising"
                 className="h-14 w-auto max-w-[200px] object-contain sm:h-16 sm:max-w-[230px] md:h-20 md:max-w-[290px] lg:h-24 lg:max-w-[340px]"
-                // smaller logoclassName="h-14 w-auto max-w-[190px] object-contain sm:h-16 sm:max-w-[220px] md:h-20 md:max-w-[270px] lg:h-20 lg:max-w-[310px]"
+                //className="h-14 w-auto max-w-[190px] object-contain sm:h-16 sm:max-w-[220px] md:h-20 md:max-w-[270px] lg:h-20 lg:max-w-[310px]"
               />
             </div>
 
