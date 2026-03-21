@@ -539,8 +539,8 @@ export default function TrueNorthLanding() {
           <div className="mx-auto max-w-3xl text-center">
             <div className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700 dark:text-sky-300">About</div>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 md:text-4xl">
-              Real support for lives of purpose and
-              <span className="bg-gradient-to-r from-blue-700 to-emerald-600 bg-clip-text text-transparent"> adventure</span>
+              Real life experiences for lives of purpose and
+              <span className="bg-gradient-to-r from-blue-700 to-emerald-600 bg-clip-text text-transparent"> ADVENTURE</span>
             </h2>
             <p className="mt-5 text-base leading-7 text-slate-600 dark:text-slate-300">
               Personalized in-home support and community-based day programming designed to help people access the same
