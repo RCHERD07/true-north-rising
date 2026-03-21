@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import logo from "./assets/transparent_logo_notext.png";
+//import logo from "./assets/transparent_logo_notext.png";
+import headerLogo from "./assets/trueNorthHeaderLogo.png";
 import boardwalk from "./assets/boardwalk.jpg";
 import piersunset from "./assets/piersunset.jpg";
 import pier from "./assets/pier.jpg";
@@ -26,13 +27,15 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 
 function Button({ className = "", variant = "default", size = "default", ...props }: ButtonProps) {
   const base =
-    "inline-flex items-center justify-center gap-2 select-none whitespace-nowrap rounded-xl text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-slate-300 disabled:pointer-events-none disabled:opacity-50";
+    "inline-flex items-center justify-center gap-2 select-none whitespace-nowrap rounded-xl text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-slate-300 disabled:pointer-events-none disabled:opacity-50 dark:focus:ring-slate-600";
 
   const variants: Record<string, string> = {
-    default: "bg-slate-900 text-white hover:bg-slate-800",
-    outline: "border border-slate-300 bg-white text-slate-900 hover:bg-slate-50",
-    secondary: "bg-slate-100 text-slate-900 hover:bg-slate-200",
-    ghost: "bg-transparent text-slate-700 hover:bg-slate-100",
+    default: "bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white",
+    outline:
+      "border border-slate-300 bg-white text-slate-900 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800",
+    secondary:
+      "bg-slate-100 text-slate-900 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700",
+    ghost: "bg-transparent text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800",
   };
 
   const sizes: Record<string, string> = {
@@ -44,7 +47,12 @@ function Button({ className = "", variant = "default", size = "default", ...prop
 }
 
 function Card({ className = "", ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={`rounded-2xl border border-slate-200/70 bg-white shadow-sm ${className}`} {...props} />;
+  return (
+    <div
+      className={`rounded-2xl border border-slate-200/70 bg-white shadow-sm transition-colors dark:border-slate-800 dark:bg-slate-900 ${className}`}
+      {...props}
+    />
+  );
 }
 
 function CardContent({ className = "", ...props }: React.HTMLAttributes<HTMLDivElement>) {
@@ -54,7 +62,7 @@ function CardContent({ className = "", ...props }: React.HTMLAttributes<HTMLDivE
 const SAMPLE_IMAGES = [
   {
     src: boardwalk,
-    alt: "boardwalk",
+    alt: "Boardwalk",
     caption: "Everyday life, supported with dignity.",
   },
   {
@@ -151,7 +159,7 @@ function Carousel({
   return (
     <div className="w-full">
       <div
-        className="relative overflow-hidden rounded-[28px] border border-slate-200/70 bg-slate-50 shadow-sm"
+        className="relative overflow-hidden rounded-[28px] border border-slate-200/70 bg-slate-50 shadow-sm transition-colors dark:border-slate-800 dark:bg-slate-900"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
@@ -180,8 +188,8 @@ function Carousel({
 
               <div className="absolute inset-x-0 bottom-0 p-3 text-left sm:p-4 md:p-10">
                 <div className="max-w-[72%] sm:max-w-[65%] md:max-w-2xl">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-white/85 px-2.5 py-1 text-[11px] font-medium text-slate-700 shadow-sm sm:px-3 sm:text-xs">
-                    <Sparkles className="h-3.5 w-3.5 text-emerald-600 sm:h-4 sm:w-4" />
+                  <div className="inline-flex items-center gap-2 rounded-full bg-white/85 px-2.5 py-1 text-[11px] font-medium text-slate-700 shadow-sm dark:bg-slate-900/85 dark:text-slate-100 sm:px-3 sm:text-xs">
+                    <Sparkles className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-300 sm:h-4 sm:w-4" />
                     Customer Moments
                   </div>
 
@@ -192,20 +200,13 @@ function Carousel({
 
                   <div className="mt-3 flex max-w-[220px] flex-col gap-2 sm:max-w-none sm:flex-row md:mt-5 md:gap-3">
                     <Button
-                      className="w-full rounded-xl bg-blue-400 text-slate-900 hover:bg-blue-300 sm:w-auto"
+                      className="w-full rounded-xl bg-blue-500 text-white hover:bg-blue-400 dark:bg-blue-400 dark:text-slate-950 dark:hover:bg-blue-300 sm:w-auto"
                       onClick={(e) => {
                         e.stopPropagation();
                         onGetStarted?.();
                       }}
                     >
                       Get started
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full rounded-xl border-white/70 bg-white/10 text-white hover:bg-white/20 sm:w-auto"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      See services
                     </Button>
                   </div>
                 </div>
@@ -214,7 +215,7 @@ function Carousel({
           </AnimatePresence>
 
           <div className="absolute inset-x-0 top-0 flex items-start justify-between p-3 md:p-5">
-            <div className="rounded-full bg-white/85 px-2.5 py-1 text-[11px] text-slate-700 shadow-sm sm:px-3 sm:py-1.5 sm:text-xs">
+            <div className="rounded-full bg-white/85 px-2.5 py-1 text-[11px] text-slate-700 shadow-sm dark:bg-slate-900/85 dark:text-slate-100 sm:px-3 sm:py-1.5 sm:text-xs">
               {safeIndex + 1} / {images.length}
             </div>
 
@@ -222,7 +223,7 @@ function Carousel({
               <Button
                 variant="secondary"
                 size="icon"
-                className="h-9 w-9 rounded-2xl bg-white/85 hover:bg-white md:h-10 md:w-10 md:rounded-full"
+                className="h-9 w-9 rounded-2xl bg-white/85 hover:bg-white dark:bg-slate-900/85 dark:hover:bg-slate-800 md:h-10 md:w-10 md:rounded-full"
                 onClick={goPrev}
                 aria-label="Previous image"
               >
@@ -231,7 +232,7 @@ function Carousel({
               <Button
                 variant="secondary"
                 size="icon"
-                className="h-9 w-9 rounded-2xl bg-white/85 hover:bg-white md:h-10 md:w-10 md:rounded-full"
+                className="h-9 w-9 rounded-2xl bg-white/85 hover:bg-white dark:bg-slate-900/85 dark:hover:bg-slate-800 md:h-10 md:w-10 md:rounded-full"
                 onClick={goNext}
                 aria-label="Next image"
               >
@@ -279,7 +280,7 @@ function Carousel({
               onClick={(e) => e.stopPropagation()}
             >
               <button
-                className="absolute right-3 top-3 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
+                className="absolute right-3 top-3 z-20 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
                 onClick={() => setExpanded(false)}
                 aria-label="Close"
               >
@@ -289,7 +290,7 @@ function Carousel({
               <img src={current?.src} alt={current?.alt} className="max-h-[78vh] w-full object-contain bg-slate-950" />
 
               {(current?.caption || current?.alt) && (
-                <div className="p-4 text-white/90">
+                <div className="relative z-10 p-4 text-white/90">
                   <p className="text-sm font-medium md:text-base">{current?.caption || current?.alt}</p>
                 </div>
               )}
@@ -298,7 +299,7 @@ function Carousel({
                 <Button
                   variant="secondary"
                   size="icon"
-                  className="bg-white/10 text-white hover:bg-white/20"
+                  className="z-20 bg-white/10 text-white hover:bg-white/20"
                   onClick={goPrev}
                   aria-label="Previous image"
                 >
@@ -310,7 +311,7 @@ function Carousel({
                 <Button
                   variant="secondary"
                   size="icon"
-                  className="bg-white/10 text-white hover:bg-white/20"
+                  className="z-20 bg-white/10 text-white hover:bg-white/20"
                   onClick={goNext}
                   aria-label="Next image"
                 >
@@ -390,92 +391,99 @@ export default function TrueNorthLanding() {
   };
 
   const handleInquirySubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  setFormError("");
-  setFormSuccess("");
+    setFormError("");
+    setFormSuccess("");
 
-  const validationMessage = validateInquiryForm();
-  if (validationMessage) {
-    setFormError(validationMessage);
-    return;
-  }
-
-  try {
-    setIsSubmittingInquiry(true);
-
-    const response = await fetch("/.netlify/functions/submit-intake", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(inquiryForm),
-    });
-
-    const rawText = await response.text();
-    let data: any = {};
+    const validationMessage = validateInquiryForm();
+    if (validationMessage) {
+      setFormError(validationMessage);
+      return;
+    }
 
     try {
-      data = rawText ? JSON.parse(rawText) : {};
-    } catch {
-      data = {};
+      setIsSubmittingInquiry(true);
+
+      const response = await fetch("/.netlify/functions/submit-intake", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inquiryForm),
+      });
+
+      const rawText = await response.text();
+      let data: any = {};
+
+      try {
+        data = rawText ? JSON.parse(rawText) : {};
+      } catch {
+        data = {};
+      }
+
+      if (!response.ok) {
+        throw new Error(data?.message || `Request failed with status ${response.status}.`);
+      }
+
+      setFormSuccess("Thank you for reaching out. We received your information and will be in touch soon.");
+      setInquiryForm(INITIAL_INQUIRY_FORM);
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "We could not send your request right now. Please try again or call us directly.";
+
+      setFormError(message);
+    } finally {
+      setIsSubmittingInquiry(false);
     }
-
-    if (!response.ok) {
-      throw new Error(
-        data?.message || `Request failed with status ${response.status}.`
-      );
-    }
-
-    setFormSuccess(
-      "Thank you for reaching out. We received your information and will be in touch soon."
-    );
-    setInquiryForm(INITIAL_INQUIRY_FORM);
-  } catch (error) {
-    const message =
-      error instanceof Error
-        ? error.message
-        : "We could not send your request right now. Please try again or call us directly.";
-
-    setFormError(message);
-  } finally {
-    setIsSubmittingInquiry(false);
-  }
-};
+  };
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
-      <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/95 backdrop-blur">
+    <div className="min-h-screen bg-white text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100">
+      <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/95 backdrop-blur transition-colors dark:border-slate-800 dark:bg-slate-950/90">
         <div className="mx-auto max-w-6xl px-4 py-3">
           <div className="flex items-center justify-between gap-4">
-            <div className="flex min-w-0 items-center gap-3">
-              <div className="grid h-14 w-14 shrink-0 place-items-center md:h-16 md:w-16">
-                <img src={logo} alt="True North Rising Logo" className="h-full w-full object-contain" />
-              </div>
-              <div className="min-w-0">
-                <div className="truncate text-sm text-slate-600 md:text-base">True North Rising</div>
-                <div className="-mt-0.5 text-xl font-semibold tracking-tight md:text-2xl">LLC</div>
-              </div>
+            <div className="min-w-0 flex-1">
+              <img
+                src={headerLogo}
+                alt="True North Rising"
+                className="h-14 w-auto max-w-[200px] object-contain sm:h-16 sm:max-w-[230px] md:h-20 md:max-w-[290px] lg:h-24 lg:max-w-[340px]"
+                // smaller logoclassName="h-14 w-auto max-w-[190px] object-contain sm:h-16 sm:max-w-[220px] md:h-20 md:max-w-[270px] lg:h-20 lg:max-w-[310px]"
+              />
             </div>
 
             <div className="flex items-center gap-2">
               <div className="hidden md:flex md:items-center md:gap-6">
-                <a href="#about" className="text-sm text-slate-700 hover:text-slate-900">
+                <a
+                  href="#about"
+                  className="text-sm text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
+                >
                   About
                 </a>
-                <a href="#services" className="text-sm text-slate-700 hover:text-slate-900">
+                <a
+                  href="#services"
+                  className="text-sm text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
+                >
                   Services
                 </a>
-                <a href="#contact" className="text-sm text-slate-700 hover:text-slate-900">
+                <a
+                  href="#contact"
+                  className="text-sm text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
+                >
                   Contact
                 </a>
-                <Button className="rounded-xl bg-slate-900 text-white hover:bg-slate-800" onClick={handleCallClick}>
+                <Button
+                  className="rounded-xl bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
+                  onClick={handleCallClick}
+                >
                   Call us
                 </Button>
               </div>
 
               <Button
-                className="rounded-xl bg-slate-900 px-4 py-2 text-white hover:bg-slate-800 md:hidden"
+                className="rounded-xl bg-slate-900 px-4 py-2 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white md:hidden"
                 onClick={handleCallClick}
               >
                 Call
@@ -483,7 +491,7 @@ export default function TrueNorthLanding() {
 
               <button
                 type="button"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-slate-50 md:hidden"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 md:hidden"
                 onClick={() => setMobileMenuOpen((prev) => !prev)}
                 aria-label="Open menu"
                 aria-expanded={mobileMenuOpen}
@@ -494,24 +502,24 @@ export default function TrueNorthLanding() {
           </div>
 
           {mobileMenuOpen && (
-            <div className="mt-3 rounded-2xl border border-slate-200/70 bg-white p-2 shadow-lg md:hidden">
+            <div className="mt-3 rounded-2xl border border-slate-200/70 bg-white p-2 shadow-lg dark:border-slate-800 dark:bg-slate-900 md:hidden">
               <a
                 href="#about"
-                className="block rounded-xl px-4 py-3 text-sm text-slate-700 hover:bg-slate-50"
+                className="block rounded-xl px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 About
               </a>
               <a
                 href="#services"
-                className="block rounded-xl px-4 py-3 text-sm text-slate-700 hover:bg-slate-50"
+                className="block rounded-xl px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Services
               </a>
               <a
                 href="#contact"
-                className="block rounded-xl px-4 py-3 text-sm text-slate-700 hover:bg-slate-50"
+                className="block rounded-xl px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Contact
@@ -528,19 +536,16 @@ export default function TrueNorthLanding() {
 
         <section id="about" className="scroll-mt-20 mx-auto max-w-6xl px-4 py-14 md:py-20">
           <div className="mx-auto max-w-3xl text-center">
-            <div className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">About</div>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
+            <div className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700 dark:text-sky-300">About</div>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 md:text-4xl">
               Real support for lives of purpose and
-              <span className="bg-gradient-to-r from-blue-700 to-emerald-600 bg-clip-text text-transparent">
-                {" "}
-                adventure
-              </span>
+              <span className="bg-gradient-to-r from-blue-700 to-emerald-600 bg-clip-text text-transparent"> adventure</span>
             </h2>
-            <p className="mt-5 text-base leading-7 text-slate-600">
+            <p className="mt-5 text-base leading-7 text-slate-600 dark:text-slate-300">
               Personalized in-home support and community-based day programming designed to help people access the same
               everyday opportunities most of us take for granted.
             </p>
-            <p className="mt-4 text-base leading-7 text-slate-600">
+            <p className="mt-4 text-base leading-7 text-slate-600 dark:text-slate-300">
               We provide personalized in-home support and community-based day programming designed to help people build
               meaningful routines, stronger independence, and fuller access to everyday life. Our approach is centered
               on dignity, purpose, connection, and the belief that everyone deserves the opportunity to live a rich and
@@ -549,34 +554,36 @@ export default function TrueNorthLanding() {
 
             <div className="mt-8 grid gap-4 text-left sm:grid-cols-2">
               <div className="flex items-start gap-3">
-                <div className="mt-0.5 grid h-10 w-10 place-items-center rounded-full bg-sky-50 text-sky-700">
+                <div className="mt-0.5 grid h-10 w-10 place-items-center rounded-full bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300">
                   <Shield className="h-5 w-5" />
                 </div>
                 <div>
-                  <div className="font-semibold text-slate-900">Dependable support</div>
-                  <div className="text-sm text-slate-600">Consistent routines and thoughtful communication.</div>
+                  <div className="font-semibold text-slate-900 dark:text-slate-100">Dependable support</div>
+                  <div className="text-sm text-slate-600 dark:text-slate-300">Consistent routines and thoughtful communication.</div>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="mt-0.5 grid h-10 w-10 place-items-center rounded-full bg-emerald-50 text-emerald-700">
+                <div className="mt-0.5 grid h-10 w-10 place-items-center rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
                   <Compass className="h-5 w-5" />
                 </div>
                 <div>
-                  <div className="font-semibold text-slate-900">Real-life focus</div>
-                  <div className="text-sm text-slate-600">Support built around daily life and participation.</div>
+                  <div className="font-semibold text-slate-900 dark:text-slate-100">Real-life focus</div>
+                  <div className="text-sm text-slate-600 dark:text-slate-300">Support built around daily life and participation.</div>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section id="services" className="scroll-mt-20 border-y border-slate-200/70 bg-slate-50/70">
+        <section id="services" className="scroll-mt-20 border-y border-slate-200/70 bg-slate-50/70 transition-colors dark:border-slate-800 dark:bg-slate-900/50">
           <div className="mx-auto max-w-6xl px-4 py-14 md:py-20">
             <div className="text-center">
-              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">Services</div>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">How we help</h2>
-              <p className="mx-auto mt-4 max-w-2xl text-base text-slate-600">
+              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700 dark:text-sky-300">Services</div>
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 md:text-4xl">
+                How we help
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-base text-slate-600 dark:text-slate-300">
                 Personalized services shaped around real needs, routines, and goals with thoughtful support tailored to
                 each person’s daily life and independence.
               </p>
@@ -585,11 +592,11 @@ export default function TrueNorthLanding() {
             <div className="mt-10 grid gap-6 md:grid-cols-3">
               <Card>
                 <CardContent className="p-7 text-center">
-                  <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-sky-50 text-sky-700">
+                  <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300">
                     <Shield className="h-7 w-7" />
                   </div>
-                  <h3 className="mt-5 text-xl font-semibold text-slate-900">In-home support</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">
+                  <h3 className="mt-5 text-xl font-semibold text-slate-900 dark:text-slate-100">In-home support</h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
                     Help with routines, structure, supervision, and independence-building in the home setting.
                   </p>
                 </CardContent>
@@ -597,11 +604,11 @@ export default function TrueNorthLanding() {
 
               <Card>
                 <CardContent className="p-7 text-center">
-                  <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-emerald-50 text-emerald-700">
+                  <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
                     <Compass className="h-7 w-7" />
                   </div>
-                  <h3 className="mt-5 text-xl font-semibold text-slate-900">Community access</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">
+                  <h3 className="mt-5 text-xl font-semibold text-slate-900 dark:text-slate-100">Community access</h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
                     Outings, appointments, activities, and support that make everyday participation more possible.
                   </p>
                 </CardContent>
@@ -609,11 +616,11 @@ export default function TrueNorthLanding() {
 
               <Card>
                 <CardContent className="p-7 text-center">
-                  <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-slate-100 text-slate-700">
+                  <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200">
                     <HeartHandshake className="h-7 w-7" />
                   </div>
-                  <h3 className="mt-5 text-xl font-semibold text-slate-900">Tailored care</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">
+                  <h3 className="mt-5 text-xl font-semibold text-slate-900 dark:text-slate-100">Tailored care</h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
                     Personalized support shaped around the individual’s goals, preferences, and daily needs.
                   </p>
                 </CardContent>
@@ -627,12 +634,12 @@ export default function TrueNorthLanding() {
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-start gap-3">
-                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-slate-100 text-slate-700">
+                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200">
                     <CheckCircle2 className="h-5 w-5" />
                   </div>
                   <div>
-                    <div className="font-semibold text-slate-900">High standards</div>
-                    <div className="mt-1 text-sm text-slate-600">
+                    <div className="font-semibold text-slate-900 dark:text-slate-100">High standards</div>
+                    <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                       Professional, consistent, and respectful support from start to finish.
                     </div>
                   </div>
@@ -643,12 +650,12 @@ export default function TrueNorthLanding() {
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-start gap-3">
-                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-sky-50 text-sky-700">
+                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300">
                     <Shield className="h-5 w-5" />
                   </div>
                   <div>
-                    <div className="font-semibold text-slate-900">Privacy and respect</div>
-                    <div className="mt-1 text-sm text-slate-600">
+                    <div className="font-semibold text-slate-900 dark:text-slate-100">Privacy and respect</div>
+                    <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                       Customer-first decisions, careful communication, and dignity in every interaction.
                     </div>
                   </div>
@@ -659,12 +666,12 @@ export default function TrueNorthLanding() {
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-start gap-3">
-                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-emerald-50 text-emerald-700">
+                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
                     <HeartHandshake className="h-5 w-5" />
                   </div>
                   <div>
-                    <div className="font-semibold text-slate-900">Real-life access</div>
-                    <div className="mt-1 text-sm text-slate-600">
+                    <div className="font-semibold text-slate-900 dark:text-slate-100">Real-life access</div>
+                    <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                       Helping people do more of what matters in daily life, not just filling time.
                     </div>
                   </div>
@@ -679,29 +686,35 @@ export default function TrueNorthLanding() {
             <CardContent className="p-8 md:p-10">
               <div className="grid gap-8 md:grid-cols-[1.3fr_0.9fr] md:items-center">
                 <div>
-                  <div className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">Contact</div>
-                  <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">
+                  <div className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700 dark:text-sky-300">Contact</div>
+                  <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
                     Let’s talk about the right support
                   </h2>
-                  <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
+                  <p className="mt-4 max-w-xl text-base leading-7 text-slate-600 dark:text-slate-300">
                     Reach out and share what kind of support you are looking for. We can help you figure out what makes
                     the most sense.
                   </p>
 
                   <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                    <Button className="rounded-xl bg-slate-900 text-white hover:bg-slate-800" onClick={openInquiryPopup}>
+                    <Button
+                      className="rounded-xl bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
+                      onClick={openInquiryPopup}
+                    >
                       <Sparkles className="mr-2 h-4 w-4" />
                       Get started
                     </Button>
 
-                    <Button className="rounded-xl bg-slate-900 text-white hover:bg-slate-800" onClick={handleCallClick}>
+                    <Button
+                      className="rounded-xl bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
+                      onClick={handleCallClick}
+                    >
                       <Phone className="mr-2 h-4 w-4" />
                       Call
                     </Button>
 
                     <a
                       href={businessEmailHref}
-                      className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition hover:bg-slate-50"
+                      className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
                     >
                       <Mail className="mr-2 h-4 w-4" />
                       Email
@@ -710,19 +723,19 @@ export default function TrueNorthLanding() {
                 </div>
 
                 <div className="grid gap-4">
-                  <div className="flex items-center gap-3 rounded-2xl border border-slate-200/70 p-4">
-                    <Phone className="h-4 w-4 text-emerald-600" />
-                    <span className="text-sm text-slate-700">{businessPhoneDisplay}</span>
+                  <div className="flex items-center gap-3 rounded-2xl border border-slate-200/70 p-4 transition-colors dark:border-slate-800 dark:bg-slate-900/70">
+                    <Phone className="h-4 w-4 text-emerald-600 dark:text-emerald-300" />
+                    <span className="text-sm text-slate-700 dark:text-slate-200">{businessPhoneDisplay}</span>
                   </div>
 
-                  <div className="flex items-center gap-3 rounded-2xl border border-slate-200/70 p-4">
-                    <Mail className="h-4 w-4 text-sky-700" />
-                    <span className="text-sm text-slate-700">truenorthrisingsc@gmail.com</span>
+                  <div className="flex items-center gap-3 rounded-2xl border border-slate-200/70 p-4 transition-colors dark:border-slate-800 dark:bg-slate-900/70">
+                    <Mail className="h-4 w-4 text-sky-700 dark:text-sky-300" />
+                    <span className="text-sm text-slate-700 dark:text-slate-200">truenorthrisingsc@gmail.com</span>
                   </div>
 
-                  <div className="flex items-center gap-3 rounded-2xl border border-slate-200/70 p-4">
-                    <MapPin className="h-4 w-4 text-slate-600" />
-                    <span className="text-sm text-slate-700">Coastal Southern California</span>
+                  <div className="flex items-center gap-3 rounded-2xl border border-slate-200/70 p-4 transition-colors dark:border-slate-800 dark:bg-slate-900/70">
+                    <MapPin className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                    <span className="text-sm text-slate-700 dark:text-slate-200">Coastal Southern California</span>
                   </div>
                 </div>
               </div>
@@ -731,14 +744,14 @@ export default function TrueNorthLanding() {
         </section>
       </main>
 
-      <footer className="border-t border-slate-200/70">
-        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
+      <footer className="border-t border-slate-200/70 transition-colors dark:border-slate-800">
+        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 text-xs text-slate-500 dark:text-slate-400 md:flex-row md:items-center md:justify-between">
           <div>© {new Date().getFullYear()} True North Rising LLC. All rights reserved.</div>
           <div className="flex gap-3">
-            <a className="hover:text-slate-700" href="#">
+            <a className="hover:text-slate-700 dark:hover:text-slate-200" href="#">
               Privacy
             </a>
-            <a className="hover:text-slate-700" href="#">
+            <a className="hover:text-slate-700 dark:hover:text-slate-200" href="#">
               Terms
             </a>
           </div>
@@ -755,7 +768,7 @@ export default function TrueNorthLanding() {
             onClick={closeInquiryPopup}
           >
             <motion.div
-              className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl md:p-8"
+              className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl transition-colors dark:bg-slate-900 md:p-8"
               initial={{ opacity: 0, scale: 0.96, y: 8 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.98, y: 4 }}
@@ -768,11 +781,13 @@ export default function TrueNorthLanding() {
               <div className="flex items-start justify-between gap-4">
                 {!formSuccess ? (
                   <div>
-                    <div className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">Get Started</div>
-                    <h3 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
+                    <div className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700 dark:text-sky-300">
+                      Get Started
+                    </div>
+                    <h3 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
                       Tell us about your needs
                     </h3>
-                    <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+                    <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-300">
                       Share a little about your needs and we’ll reach out to learn how we can help.
                     </p>
                   </div>
@@ -783,7 +798,7 @@ export default function TrueNorthLanding() {
                 <button
                   type="button"
                   onClick={closeInquiryPopup}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"
                   aria-label="Close"
                   disabled={isSubmittingInquiry}
                 >
@@ -792,19 +807,19 @@ export default function TrueNorthLanding() {
               </div>
 
               {formSuccess ? (
-                <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
+                <div className="mt-2 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 dark:border-emerald-900/70 dark:bg-emerald-950/30">
                   <div className="flex items-start gap-3">
-                    <CheckCircle2 className="mt-0.5 h-5 w-5 text-emerald-600" />
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 text-emerald-600 dark:text-emerald-300" />
                     <div>
-                      <div className="font-semibold text-emerald-900">Request received</div>
-                      <p className="mt-1 text-sm leading-6 text-emerald-800">{formSuccess}</p>
+                      <div className="font-semibold text-emerald-900 dark:text-emerald-200">Request received</div>
+                      <p className="mt-1 text-sm leading-6 text-emerald-800 dark:text-emerald-300">{formSuccess}</p>
                     </div>
                   </div>
 
                   <div className="mt-5">
                     <Button
                       type="button"
-                      className="rounded-xl bg-slate-900 text-white hover:bg-slate-800"
+                      className="rounded-xl bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
                       onClick={closeInquiryPopup}
                     >
                       Close
@@ -815,55 +830,55 @@ export default function TrueNorthLanding() {
                 <form className="mt-6" onSubmit={handleInquirySubmit}>
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-slate-700">Full name *</label>
+                      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">Full name *</label>
                       <input
                         type="text"
                         value={inquiryForm.fullName}
                         onChange={(e) => updateInquiryField("fullName", e.target.value)}
-                        className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-slate-500 dark:focus:ring-slate-800"
                         placeholder="Your name"
                       />
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-slate-700">Phone number *</label>
+                      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">Phone number *</label>
                       <input
                         type="tel"
                         value={inquiryForm.phone}
                         onChange={(e) => updateInquiryField("phone", e.target.value)}
-                        className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-slate-500 dark:focus:ring-slate-800"
                         placeholder="(555) 555-5555"
                       />
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-slate-700">Email *</label>
+                      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">Email *</label>
                       <input
                         type="email"
                         value={inquiryForm.email}
                         onChange={(e) => updateInquiryField("email", e.target.value)}
-                        className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-slate-500 dark:focus:ring-slate-800"
                         placeholder="you@example.com"
                       />
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-slate-700">City / location *</label>
+                      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">City / location *</label>
                       <input
                         type="text"
                         value={inquiryForm.location}
                         onChange={(e) => updateInquiryField("location", e.target.value)}
-                        className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-slate-500 dark:focus:ring-slate-800"
                         placeholder="City, area, or region"
                       />
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-slate-700">Who needs support? *</label>
+                      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">Who needs support? *</label>
                       <select
                         value={inquiryForm.whoNeedsSupport}
                         onChange={(e) => updateInquiryField("whoNeedsSupport", e.target.value)}
-                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-slate-500 dark:focus:ring-slate-800"
                       >
                         <option value="">Select one</option>
                         <option value="Self">Self</option>
@@ -874,24 +889,24 @@ export default function TrueNorthLanding() {
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-slate-700">Potential customer name</label>
+                      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">Potential customer name</label>
                       <input
                         type="text"
                         value={inquiryForm.potentialCustomerName}
                         onChange={(e) => updateInquiryField("potentialCustomerName", e.target.value)}
-                        className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-slate-500 dark:focus:ring-slate-800"
                         placeholder="Optional"
                       />
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-slate-700">
+                      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
                         Preferred contact method *
                       </label>
                       <select
                         value={inquiryForm.preferredContactMethod}
                         onChange={(e) => updateInquiryField("preferredContactMethod", e.target.value)}
-                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-slate-500 dark:focus:ring-slate-800"
                       >
                         <option value="">Select one</option>
                         <option value="Call">Call</option>
@@ -901,19 +916,19 @@ export default function TrueNorthLanding() {
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-slate-700">Best time to reach you</label>
+                      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">Best time to reach you</label>
                       <input
                         type="text"
                         value={inquiryForm.bestTimeToReach}
                         onChange={(e) => updateInquiryField("bestTimeToReach", e.target.value)}
-                        className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-slate-500 dark:focus:ring-slate-800"
                         placeholder="Morning, afternoons, weekdays, etc."
                       />
                     </div>
                   </div>
 
                   <div className="mt-5">
-                    <label className="mb-3 block text-sm font-medium text-slate-700">Services of interest</label>
+                    <label className="mb-3 block text-sm font-medium text-slate-700 dark:text-slate-200">Services of interest</label>
                     <div className="grid gap-3 sm:grid-cols-2">
                       {SERVICE_OPTIONS.map((service) => {
                         const checked = inquiryForm.servicesInterested.includes(service);
@@ -921,7 +936,7 @@ export default function TrueNorthLanding() {
                         return (
                           <label
                             key={service}
-                            className="flex cursor-pointer items-center gap-3 rounded-2xl border border-slate-200 p-4 text-sm text-slate-700 transition hover:bg-slate-50"
+                            className="flex cursor-pointer items-center gap-3 rounded-2xl border border-slate-200 p-4 text-sm text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                           >
                             <input
                               type="checkbox"
@@ -937,14 +952,14 @@ export default function TrueNorthLanding() {
                   </div>
 
                   <div className="mt-5">
-                    <label className="mb-2 block text-sm font-medium text-slate-700">
+                    <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
                       Tell us about your situation *
                     </label>
                     <textarea
                       value={inquiryForm.situation}
                       onChange={(e) => updateInquiryField("situation", e.target.value)}
                       rows={5}
-                      className="w-full rounded-2xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                      className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-slate-500 dark:focus:ring-slate-800"
                       placeholder="Share a little about the kind of support you are looking for."
                     />
                   </div>
@@ -961,10 +976,10 @@ export default function TrueNorthLanding() {
                     />
                   </div>
 
-                  <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/70">
                     <div className="flex items-start gap-3">
-                      <Shield className="mt-0.5 h-5 w-5 text-slate-600" />
-                      <p className="text-sm leading-6 text-slate-600">
+                      <Shield className="mt-0.5 h-5 w-5 text-slate-600 dark:text-slate-300" />
+                      <p className="text-sm leading-6 text-slate-600 dark:text-slate-300">
                         For your privacy, please do not include Social Security numbers, insurance details, medical
                         diagnoses, or other highly sensitive personal information in this form.
                       </p>
@@ -972,7 +987,7 @@ export default function TrueNorthLanding() {
                   </div>
 
                   {formError && (
-                    <div className="mt-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                    <div className="mt-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/70 dark:bg-red-950/30 dark:text-red-300">
                       {formError}
                     </div>
                   )}
@@ -980,7 +995,7 @@ export default function TrueNorthLanding() {
                   <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                     <Button
                       type="submit"
-                      className="rounded-xl bg-slate-900 text-white hover:bg-slate-800"
+                      className="rounded-xl bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
                       disabled={isSubmittingInquiry}
                     >
                       {isSubmittingInquiry ? "Sending..." : "Submit"}
@@ -989,7 +1004,7 @@ export default function TrueNorthLanding() {
                     <button
                       type="button"
                       onClick={closeInquiryPopup}
-                      className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition hover:bg-slate-50"
+                      className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
                       disabled={isSubmittingInquiry}
                     >
                       Cancel
@@ -1012,7 +1027,7 @@ export default function TrueNorthLanding() {
             onClick={() => setShowCallPopup(false)}
           >
             <motion.div
-              className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl"
+              className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl transition-colors dark:bg-slate-900"
               initial={{ opacity: 0, scale: 0.96, y: 8 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.98, y: 4 }}
@@ -1024,8 +1039,8 @@ export default function TrueNorthLanding() {
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <div className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">Call Us</div>
-                  <h3 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
+                  <div className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700 dark:text-sky-300">Call Us</div>
+                  <h3 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
                     We’d love to hear from you
                   </h3>
                 </div>
@@ -1033,27 +1048,27 @@ export default function TrueNorthLanding() {
                 <button
                   type="button"
                   onClick={() => setShowCallPopup(false)}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"
                   aria-label="Close"
                 >
                   <X className="h-5 w-5" />
                 </button>
               </div>
 
-              <p className="mt-4 text-sm leading-6 text-slate-600">
+              <p className="mt-4 text-sm leading-6 text-slate-600 dark:text-slate-300">
                 Please give us a call at the number below. We’ll be happy to talk through your needs and answer any
                 questions.
               </p>
 
-              <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center">
-                <div className="text-sm text-slate-500">Business phone</div>
-                <div className="mt-1 text-2xl font-semibold tracking-tight text-slate-900">{businessPhoneDisplay}</div>
+              <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center dark:border-slate-700 dark:bg-slate-800/70">
+                <div className="text-sm text-slate-500 dark:text-slate-400">Business phone</div>
+                <div className="mt-1 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">{businessPhoneDisplay}</div>
               </div>
 
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <a
                   href={businessPhoneHref}
-                  className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
+                  className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
                 >
                   <Phone className="mr-2 h-4 w-4" />
                   Call from this device
@@ -1062,7 +1077,7 @@ export default function TrueNorthLanding() {
                 <button
                   type="button"
                   onClick={() => setShowCallPopup(false)}
-                  className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition hover:bg-slate-50"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
                 >
                   Close
                 </button>
