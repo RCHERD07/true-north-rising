@@ -405,7 +405,7 @@ export default function TrueNorthLanding() {
     try {
       setIsSubmittingInquiry(true);
 
-      const response = await fetch("/.netlify/functions/submit-intake", {
+      const response = await fetch("/api/submit-intake", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

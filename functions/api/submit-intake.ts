@@ -1,5 +1,7 @@
-import type { Handler } from "@netlify/functions";
-import { Resend } from "resend";
+export interface Env {
+  RESEND_API_KEY: string;
+  RESEND_FROM_EMAIL: string;
+}
 
 type InquiryPayload = {
   fullName?: string;
@@ -12,13 +14,10 @@ type InquiryPayload = {
   preferredContactMethod?: string;
   bestTimeToReach?: string;
   situation?: string;
-  website?: string; // honeypot
+  website?: string;
 };
 
 const OWNER_EMAIL = "truenorthrisingsc@gmail.com";
-
-const resendApiKey = process.env.RESEND_API_KEY;
-const resendFromEmail = process.env.RESEND_FROM_EMAIL;
 
 const trimValue = (value: unknown) => {
   return typeof value === "string" ? value.trim() : "";
@@ -36,23 +35,22 @@ const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
 
 const tooLong = (value: string, max: number) => value.length > max;
 
-export const handler: Handler = async (event) => {
-  if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ message: "Method not allowed." }),
-    };
+export const onRequestPost = async ({
+  request,
+  env,
+}: {
+  request: Request;
+  env: Env;
+}) => {
+  if (!env.RESEND_API_KEY || !env.RESEND_FROM_EMAIL) {
+    return Response.json({ message: "Email service is not configured." }, { status: 500 });
   }
-
-  if (!resendApiKey || !resendFromEmail) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: "Email service is not configured." }),
-    };
+  if (request.method !== "POST") {
+  return Response.json({ message: "Method not allowed." }, { status: 405 });
   }
 
   try {
-    const payload: InquiryPayload = event.body ? JSON.parse(event.body) : {};
+    const payload = (await request.json()) as InquiryPayload;
 
     const fullName = trimValue(payload.fullName);
     const phone = trimValue(payload.phone);
@@ -72,12 +70,8 @@ export const handler: Handler = async (event) => {
           .filter(Boolean)
       : [];
 
-    // Honeypot spam protection
     if (website) {
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ ok: true }),
-      };
+      return Response.json({ ok: true }, { status: 200 });
     }
 
     if (
@@ -89,17 +83,11 @@ export const handler: Handler = async (event) => {
       !preferredContactMethod ||
       !situation
     ) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ message: "Please complete all required fields." }),
-      };
+      return Response.json({ message: "Please complete all required fields." }, { status: 400 });
     }
 
     if (!isValidEmail(email)) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ message: "Please enter a valid email address." }),
-      };
+      return Response.json({ message: "Please enter a valid email address." }, { status: 400 });
     }
 
     if (
@@ -113,13 +101,8 @@ export const handler: Handler = async (event) => {
       tooLong(bestTimeToReach, 120) ||
       tooLong(situation, 4000)
     ) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ message: "One or more fields are too long." }),
-      };
+      return Response.json({ message: "One or more fields are too long." }, { status: 400 });
     }
-
-    const resend = new Resend(resendApiKey);
 
     const servicesText = servicesInterested.length > 0 ? servicesInterested.join(", ") : "Not specified";
     const safeSituation = escapeHtml(situation).replace(/\n/g, "<br />");
@@ -194,33 +177,56 @@ export const handler: Handler = async (event) => {
       </div>
     `;
 
-    await resend.emails.send({
-      from: resendFromEmail,
-      to: OWNER_EMAIL,
-      replyTo: email,
-      subject: `New inquiry from ${fullName}`,
-      html: ownerHtml,
+    const ownerRes = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${env.RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: env.RESEND_FROM_EMAIL,
+        to: OWNER_EMAIL,
+        reply_to: email,
+        subject: `New inquiry from ${fullName}`,
+        html: ownerHtml,
+      }),
     });
 
-    await resend.emails.send({
-      from: resendFromEmail,
-      to: email,
-      subject: "We received your request - True North Rising",
-      html: confirmationHtml,
+    if (!ownerRes.ok) {
+      const ownerText = await ownerRes.text();
+      console.error("Owner email failed:", ownerText);
+      return Response.json({ message: "Could not send owner email." }, { status: 500 });
+    }
+
+    const confirmRes = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${env.RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: env.RESEND_FROM_EMAIL,
+        to: email,
+        subject: "We received your request - True North Rising",
+        html: confirmationHtml,
+      }),
     });
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ ok: true }),
-    };
+    if (!confirmRes.ok) {
+      const confirmText = await confirmRes.text();
+      console.error("Confirmation email failed:", confirmText);
+      return Response.json({ message: "Could not send confirmation email." }, { status: 500 });
+    }
+
+    return Response.json({ ok: true }, { status: 200 });
   } catch (error) {
     console.error("submit-intake error:", error);
 
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
+    return Response.json(
+      {
         message: "We could not send your request right now. Please try again or call us directly.",
-      }),
-    };
+      },
+      { status: 500 }
+    );
   }
 };
