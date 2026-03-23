@@ -5,7 +5,8 @@ import headerLogo from "./assets/newlogo_trans.png";
 import boardwalk from "./assets/boardwalk.jpg";
 import piersunset from "./assets/piersunset.jpg";
 import pier from "./assets/pier.jpg";
-import { motion, AnimatePresence } from "framer-motion";
+import tower6 from "./assets/tower6.jpg";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import {
   ArrowLeft,
   ArrowRight,
@@ -327,6 +328,43 @@ function Carousel({
   );
 }
 
+function ImageRevealSection() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "-55%"]);
+
+  return (
+    <section
+      ref={sectionRef}
+      aria-label="Coastal image scroll reveal"
+      className="relative h-[120vh] min-h-[900px] bg-slate-950"
+    >
+      <div className="sticky top-0 h-screen overflow-hidden">
+        <motion.img
+          src={tower6}
+          alt="Coastal tower view"
+          style={{ y: imageY }}
+          className="absolute inset-x-0 top-0 h-[135vh] w-full object-cover object-top"
+          loading="lazy"
+        />
+
+        <div className="absolute inset-0 bg-slate-950/20" />
+
+        <div className="relative z-10 flex h-full flex-col">
+          <div className="h-[14vh] bg-slate-950" />
+          <div className="flex-1" />
+          <div className="h-[14vh] bg-slate-950" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function TrueNorthLanding() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showCallPopup, setShowCallPopup] = useState(false);
@@ -443,7 +481,6 @@ export default function TrueNorthLanding() {
 
   return (
     <div className="dark min-h-screen bg-slate-950 text-slate-100 transition-colors">
-    {/* device based light/dark mode <div className="min-h-screen bg-white text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100"> */}
       <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/95 backdrop-blur transition-colors dark:border-slate-800 dark:bg-slate-950/90">
         <div className="mx-auto max-w-6xl px-4 py-3">
           <div className="flex items-center justify-between gap-4">
@@ -452,7 +489,6 @@ export default function TrueNorthLanding() {
                 src={headerLogo}
                 alt="True North Rising"
                 className="h-14 w-auto max-w-[200px] object-contain sm:h-16 sm:max-w-[230px] md:h-20 md:max-w-[290px] lg:h-24 lg:max-w-[340px]"
-                //className="h-14 w-auto max-w-[190px] object-contain sm:h-16 sm:max-w-[220px] md:h-20 md:max-w-[270px] lg:h-20 lg:max-w-[310px]"
               />
             </div>
 
@@ -578,7 +614,9 @@ export default function TrueNorthLanding() {
           </div>
         </section>
 
-        <section id="services" className="scroll-mt-20 border-y border-slate-200/70 bg-slate-50/70 transition-colors dark:border-slate-800 dark:bg-slate-900/50">
+        <ImageRevealSection />
+
+        <section id="services" className="scroll-mt-20 border-y border-slate-800 bg-slate-950 transition-colors">
           <div className="mx-auto max-w-6xl px-4 py-14 md:py-20">
             <div className="text-center">
               <div className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700 dark:text-sky-300">Services</div>
