@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 //import logo from "./assets/transparent_logo_notext.png";
-import headerLogo from "./assets/trueNorthHeaderLogo.png";
+//import headerLogo from "./assets/trueNorthHeaderLogo.png";
+import headerLogo from "./assets/newlogo_trans.png";
 import boardwalk from "./assets/boardwalk.jpg";
 import piersunset from "./assets/piersunset.jpg";
 import pier from "./assets/pier.jpg";
