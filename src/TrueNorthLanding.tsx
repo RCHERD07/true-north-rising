@@ -2,9 +2,17 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 //import logo from "./assets/transparent_logo_notext.png";
 //import headerLogo from "./assets/trueNorthHeaderLogo.png";
 import headerLogo from "./assets/newlogo_trans.png";
-import boardwalk from "./assets/boardwalk.jpg";
-import piersunset from "./assets/piersunset.jpg";
-import pier from "./assets/pier.jpg";
+import beach from "./assets/beach.jpg";
+import coconut from "./assets/coconut.jpg";
+import erikChristmas from "./assets/erik_christmas.jpg";
+import erikJake from "./assets/erik_jake.jpg";
+import erikSail from "./assets/erik_sail.jpg";
+import hotelJake from "./assets/hotel_jake.jpg";
+import jakeKendall from "./assets/jake_kendall.png";
+import kendall from "./assets/kendall.jpg";
+import tower3 from "./assets/tower3.jpg";
+import tower4 from "./assets/tower4.jpg";
+import umbrella from "./assets/umbrella.jpg";
 import tower6 from "./assets/tower6.jpg";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import {
@@ -13,6 +21,12 @@ import {
   CheckCircle2,
   Shield,
   HeartHandshake,
+  Route,
+  //Luggage,
+  //Mountain,
+  //MapPinned,
+  HouseHeart,
+  Plane,
   Compass,
   Phone,
   Mail,
@@ -63,19 +77,48 @@ function CardContent({ className = "", ...props }: React.HTMLAttributes<HTMLDivE
 
 const SAMPLE_IMAGES = [
   {
-    src: boardwalk,
-    alt: "Boardwalk",
-    caption: "Everyday life, supported with dignity.",
+    src: beach,
+    caption: "",
   },
   {
-    src: piersunset,
-    alt: "Pier sunset",
-    caption: "Sunset views from the pier.",
+    src: coconut,
+    caption: "",
   },
   {
-    src: pier,
-    alt: "Pier",
-    caption: "Community access and meaningful participation.",
+    src: jakeKendall,
+    caption: "",
+  },
+  {
+    src: erikChristmas,
+    caption: "",
+  },
+  {
+    src: tower3,
+    caption: "",
+  },
+  {
+    src: kendall,
+    caption: "",
+  },
+  {
+    src: hotelJake,
+    caption: "",
+  },
+  {
+    src: umbrella,
+    caption: "",
+  },
+  {
+    src: tower4,
+    caption: "",
+  },
+  {
+    src: erikSail,
+    caption: "",
+  },
+  {
+    src: erikJake,
+    caption: "",
   },
 ];
 
@@ -138,7 +181,7 @@ function Carousel({
   images = SAMPLE_IMAGES,
   onGetStarted,
 }: {
-  images?: { src: string; alt: string; caption?: string }[];
+  images?: { src: string; alt?: string; caption?: string }[];
   onGetStarted?: () => void;
 }) {
   const [index, setIndex] = useState(0);
@@ -165,7 +208,7 @@ function Carousel({
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
-        <div className="relative h-[220px] sm:h-[260px] md:h-[350px]">
+        <div className="relative h-[280px] sm:h-[360px] md:h-[480px] lg:h-[560px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={current?.src}
@@ -185,7 +228,12 @@ function Carousel({
               exit={{ opacity: 0, scale: 0.99 }}
               transition={{ duration: 0.35, ease: "easeOut" }}
             >
-              <img src={current?.src} alt={current?.alt} className="h-full w-full object-cover" loading="lazy" />
+              <img
+                src={current?.src}
+                alt={current?.alt || ""}
+                className="h-full w-full object-cover object-center"
+                loading="lazy"
+              />
               <div className="absolute inset-0 bg-gradient-to-r from-slate-950/45 via-slate-950/20 to-transparent" />
 
               <div className="absolute inset-x-0 bottom-0 p-3 text-left sm:p-4 md:p-10">
@@ -289,7 +337,11 @@ function Carousel({
                 <X className="h-5 w-5" />
               </button>
 
-              <img src={current?.src} alt={current?.alt} className="max-h-[78vh] w-full object-contain bg-slate-950" />
+              <img
+                src={current?.src}
+                alt={current?.alt || ""}
+                className="max-h-[78vh] w-full object-contain bg-slate-950"
+              />
 
               {(current?.caption || current?.alt) && (
                 <div className="relative z-10 p-4 text-white/90">
@@ -347,7 +399,7 @@ function ImageRevealSection() {
       <div className="sticky top-0 h-screen overflow-hidden">
         <motion.img
           src={tower6}
-          alt="Coastal tower view"
+          alt="tower 6"
           style={{ y: imageY }}
           className="absolute inset-x-0 top-0 h-[135vh] w-full object-cover object-top"
           loading="lazy"
@@ -510,14 +562,14 @@ export default function TrueNorthLanding() {
                   href="#contact"
                   className="text-sm text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
                 >
-                  Contact
+                  Contact Us
                 </a>
-                <Button
+                {/* <Button
                   className="rounded-xl bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
                   onClick={handleCallClick}
                 >
                   Call us
-                </Button>
+                </Button> */}
               </div>
 
               <Button
@@ -576,18 +628,14 @@ export default function TrueNorthLanding() {
           <div className="mx-auto max-w-3xl text-center">
             <div className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700 dark:text-sky-300">About</div>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 md:text-4xl">
-              Real life experiences for lives of purpose and
-              <span className="bg-gradient-to-r from-blue-700 to-emerald-600 bg-clip-text text-transparent"> ADVENTURE</span>
+              Real Life Experiences for Lives of Purpose and
+              <span className="bg-gradient-to-r from-blue-700 to-emerald-600 bg-clip-text text-transparent"> Adevnture</span>
             </h2>
             <p className="mt-5 text-base leading-7 text-slate-600 dark:text-slate-300">
-              Personalized in-home support and community-based day programming designed to help people access the same
-              everyday opportunities most of us take for granted.
-            </p>
-            <p className="mt-4 text-base leading-7 text-slate-600 dark:text-slate-300">
-              We provide personalized in-home support and community-based day programming designed to help people build
-              meaningful routines, stronger independence, and fuller access to everyday life. Our approach is centered
-              on dignity, purpose, connection, and the belief that everyone deserves the opportunity to live a rich and
-              engaging life.
+              Our mission is to provide personalized in-home support and community-based programming that give individuals
+              equal access to the everyday opportunities available to others. Our approach is rooted in dignity, purpose,
+              and connection, and in the belief that everyone deserves the opportunity to live a meaningful and deeply
+              fulfilling life.
             </p>
 
             <div className="mt-8 grid gap-4 text-left sm:grid-cols-2">
@@ -597,7 +645,10 @@ export default function TrueNorthLanding() {
                 </div>
                 <div>
                   <div className="font-semibold text-slate-900 dark:text-slate-100">Dependable support</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-300">Consistent routines and thoughtful communication.</div>
+                  <div className="text-sm text-slate-600 dark:text-slate-300">
+                    Through active listening and thoughtful observation, we create environments that reflect each
+                    individual’s wants and needs so they can truly thrive.
+                  </div>
                 </div>
               </div>
 
@@ -606,8 +657,11 @@ export default function TrueNorthLanding() {
                   <Compass className="h-5 w-5" />
                 </div>
                 <div>
-                  <div className="font-semibold text-slate-900 dark:text-slate-100">Real-life focus</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-300">Support built around daily life and participation.</div>
+                  <div className="font-semibold text-slate-900 dark:text-slate-100">Real-life Focus</div>
+                  <div className="text-sm text-slate-600 dark:text-slate-300">
+                    We create meaningful everyday experiences centered on what brings individuals joy, laughter, and a
+                    sense of belonging.
+                  </div>
                 </div>
               </div>
             </div>
@@ -621,7 +675,7 @@ export default function TrueNorthLanding() {
             <div className="text-center">
               <div className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700 dark:text-sky-300">Services</div>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 md:text-4xl">
-                How we help
+                How We Help
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-base text-slate-600 dark:text-slate-300">
                 Personalized services shaped around real needs, routines, and goals with thoughtful support tailored to
@@ -632,24 +686,15 @@ export default function TrueNorthLanding() {
             <div className="mt-10 grid gap-6 md:grid-cols-3">
               <Card>
                 <CardContent className="p-7 text-center">
-                  <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300">
-                    <Shield className="h-7 w-7" />
-                  </div>
-                  <h3 className="mt-5 text-xl font-semibold text-slate-900 dark:text-slate-100">In-home support</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
-                    Help with routines, structure, supervision, and independence-building in the home setting.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-7 text-center">
                   <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
-                    <Compass className="h-7 w-7" />
+                    <Route className="h-7 w-7" />
                   </div>
-                  <h3 className="mt-5 text-xl font-semibold text-slate-900 dark:text-slate-100">Community access</h3>
+                  <h3 className="mt-5 text-xl font-semibold text-slate-900 dark:text-slate-100">Community Access</h3>
                   <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
-                    Outings, appointments, activities, and support that make everyday participation more possible.
+                    We structure a tailored day program and hands-on community activities that reflect each persons interests,
+                    strengths, and goals. By building strong partnerships with local vendors, we open the door to
+                    opportunites to be part of real-world experiences that feel meanginful; not routine. The result is a
+                    more independent, self-directed life rooted in choice, connection, and contribution.
                   </p>
                 </CardContent>
               </Card>
@@ -657,11 +702,31 @@ export default function TrueNorthLanding() {
               <Card>
                 <CardContent className="p-7 text-center">
                   <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200">
-                    <HeartHandshake className="h-7 w-7" />
+                    <HouseHeart className="h-7 w-7" />
                   </div>
-                  <h3 className="mt-5 text-xl font-semibold text-slate-900 dark:text-slate-100">Tailored care</h3>
+                  <h3 className="mt-5 text-xl font-semibold text-slate-900 dark:text-slate-100">In-Home Support</h3>
                   <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
-                    Personalized support shaped around the individual’s goals, preferences, and daily needs.
+                    We provide personalized in-home support that helps build routines, encourage independence, and meet each
+                    individual’s goals, preferences, and daily needs. Our approach is thoughtful and individualized,
+                    helping each person build confidence, grow in independence, and feel supported in everyday life.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-7 text-center">
+                  <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300">
+                  
+                    <Plane className="h-7 w-7" />
+                  </div>
+                  <h3 className="mt-5 text-xl font-semibold text-slate-900 dark:text-slate-100">Adventure</h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                    We work closely with our consumers to create accessible and enriching travel experiences through
+                    thoughtful planning and personalized support. Our services include day trips to amusement parks and
+                    attractions, overnight staycations, and air or road travel for seasonal adventures such as skiing,
+                    deep-sea fishing, scenic tours, and visits to national monuments. We are committed to making
+                    adventure and travel more accessible so our consumers can enjoy the same experiences and opportunities
+                    as others.
                   </p>
                 </CardContent>
               </Card>
@@ -678,7 +743,7 @@ export default function TrueNorthLanding() {
                     <CheckCircle2 className="h-5 w-5" />
                   </div>
                   <div>
-                    <div className="font-semibold text-slate-900 dark:text-slate-100">High standards</div>
+                    <div className="font-semibold text-slate-900 dark:text-slate-100">High Standards</div>
                     <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                       Professional, consistent, and respectful support from start to finish.
                     </div>
@@ -694,7 +759,7 @@ export default function TrueNorthLanding() {
                     <Shield className="h-5 w-5" />
                   </div>
                   <div>
-                    <div className="font-semibold text-slate-900 dark:text-slate-100">Privacy and respect</div>
+                    <div className="font-semibold text-slate-900 dark:text-slate-100">Privacy and Respect</div>
                     <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                       Customer-first decisions, careful communication, and dignity in every interaction.
                     </div>
@@ -710,7 +775,7 @@ export default function TrueNorthLanding() {
                     <HeartHandshake className="h-5 w-5" />
                   </div>
                   <div>
-                    <div className="font-semibold text-slate-900 dark:text-slate-100">Real-life access</div>
+                    <div className="font-semibold text-slate-900 dark:text-slate-100">Real-life Access</div>
                     <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                       Helping people do more of what matters in daily life, not just filling time.
                     </div>
@@ -728,7 +793,7 @@ export default function TrueNorthLanding() {
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700 dark:text-sky-300">Contact</div>
                   <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
-                    Let’s talk about the right support
+                    Let’s Talk About the Right Support
                   </h2>
                   <p className="mt-4 max-w-xl text-base leading-7 text-slate-600 dark:text-slate-300">
                     Reach out and share what kind of support you are looking for. We can help you figure out what makes
