@@ -691,10 +691,10 @@ export default function TrueNorthLanding() {
                   </div>
                   <h3 className="mt-5 text-xl font-semibold text-slate-900 dark:text-slate-100">Community Access</h3>
                   <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
-                    We structure a tailored day program and hands-on community activities that reflect each persons interests,
-                    strengths, and goals. By building strong partnerships with local vendors, we open the door to
-                    opportunites to be part of real-world experiences that feel meanginful; not routine. The result is a
-                    more independent, self-directed life rooted in choice, connection, and contribution.
+                    We create tailored day programming and hands-on community activities that reflect each person’s interests,
+                    strengths, and goals. By building strong partnerships with local businesses and community spaces, we open
+                    the door to real-world experiences that feel meaningful, engaging, and connected to everyday life. The 
+                    result is greater independence, self-direction, and a life rooted in choice, connection, and contribution.
                   </p>
                 </CardContent>
               </Card>
