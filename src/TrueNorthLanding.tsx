@@ -644,7 +644,7 @@ export default function TrueNorthLanding() {
                   <Shield className="h-5 w-5" />
                 </div>
                 <div>
-                  <div className="font-semibold text-slate-900 dark:text-slate-100">Dependable support</div>
+                  <div className="font-semibold text-slate-900 dark:text-slate-100">Dependable Support</div>
                   <div className="text-sm text-slate-600 dark:text-slate-300">
                     Through active listening and thoughtful observation, we create environments that reflect each
                     individual’s wants and needs so they can truly thrive.
