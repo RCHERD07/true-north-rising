@@ -12,8 +12,9 @@ import jakeKendall from "./assets/jake_kendall.png";
 import kendall from "./assets/kendall.jpg";
 import tower3 from "./assets/tower3.jpg";
 import tower4 from "./assets/tower4.jpg";
+import tower6 from "./assets/tower6.jpg";
 import umbrella from "./assets/umbrella.jpg";
-import pierEntrance from "./assets/pierEntrance.jpg";
+//import pierEntrance from "./assets/pierEntrance.jpg";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import {
   ArrowLeft,
@@ -398,8 +399,8 @@ function ImageRevealSection() {
     >
       <div className="sticky top-0 h-screen overflow-hidden">
         <motion.img
-          src={pierEntrance}
-          alt="pierEntrance"
+          src={tower6}
+          alt="tower6"
           style={{ y: imageY }}
           className="absolute inset-x-0 top-0 h-[135vh] w-full object-cover object-top"
           loading="lazy"
