@@ -1,15 +1,15 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-//import logo from "./assets/transparent_logo_notext.png";
-//import headerLogo from "./assets/trueNorthHeaderLogo.png";
+// import logo from "./assets/transparent_logo_notext.png";
+// import headerLogo from "./assets/trueNorthHeaderLogo.png";
 import headerLogo from "./assets/newlogo_trans.png";
 import beach from "./assets/beach.jpg";
-import coconut from "./assets/coconut.jpg";
+// import coconut from "./assets/coconut.jpg";
 import erikChristmas from "./assets/erik_christmas.jpg";
 import erikJake from "./assets/erik_jake.jpg";
 import erikSail from "./assets/erik_sail.jpg";
 import hotelJake from "./assets/hotel_jake.jpg";
-import jakeKendall from "./assets/jake_kendall.png";
-import kendall from "./assets/kendall.jpg";
+// import jakeKendall from "./assets/jake_kendall.png";
+import kendallFish from "./assets/kendallFish.jpg";
 import tower3 from "./assets/tower3.jpg";
 import tower4 from "./assets/tower4.jpg";
 import tower6 from "./assets/tower6.jpg";
@@ -81,14 +81,14 @@ const SAMPLE_IMAGES = [
     src: beach,
     caption: "",
   },
-  {
-    src: coconut,
-    caption: "",
-  },
-  {
-    src: jakeKendall,
-    caption: "",
-  },
+  // {
+  //   src: coconut,
+  //   caption: "",
+  // },
+  // {
+  //   src: jakeKendall,
+  //   caption: "",
+  // },
   {
     src: erikChristmas,
     caption: "",
@@ -98,7 +98,7 @@ const SAMPLE_IMAGES = [
     caption: "",
   },
   {
-    src: kendall,
+    src: kendallFish,
     caption: "",
   },
   {
@@ -431,13 +431,14 @@ export default function TrueNorthLanding() {
   const businessPhoneHref = "tel:+14428884419";
   const businessEmailHref = "mailto:truenorthrisingsc@gmail.com?subject=True%20North%20Rising%20Inquiry";
 
+  /* Temporarily unused while all call buttons are hidden.
   const handleCallClick = () => {
     if (window.matchMedia("(max-width: 767px)").matches) {
       window.location.href = businessPhoneHref;
     } else {
       setShowCallPopup(true);
     }
-  };
+  }; */
 
   const openInquiryPopup = () => {
     setFormError("");
@@ -573,12 +574,13 @@ export default function TrueNorthLanding() {
                 </Button> */}
               </div>
 
+              {/* Temporarily hidden while the business phone number is unavailable.
               <Button
                 className="rounded-xl bg-slate-900 px-4 py-2 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white md:hidden"
                 onClick={handleCallClick}
               >
                 Call
-              </Button>
+              </Button> */}
 
               <button
                 type="button"
@@ -810,13 +812,14 @@ export default function TrueNorthLanding() {
                       Get started
                     </Button>
 
+                    {/* Temporarily hidden while the business phone number is unavailable.
                     <Button
                       className="rounded-xl bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
                       onClick={handleCallClick}
                     >
                       <Phone className="mr-2 h-4 w-4" />
                       Call
-                    </Button>
+                    </Button> */}
 
                     <a
                       href={businessEmailHref}
@@ -829,10 +832,11 @@ export default function TrueNorthLanding() {
                 </div>
 
                 <div className="grid gap-4">
+                  {/* Temporarily hidden while the business phone number is unavailable.
                   <div className="flex items-center gap-3 rounded-2xl border border-slate-200/70 p-4 transition-colors dark:border-slate-800 dark:bg-slate-900/70">
                     <Phone className="h-4 w-4 text-emerald-600 dark:text-emerald-300" />
                     <span className="text-sm text-slate-700 dark:text-slate-200">{businessPhoneDisplay}</span>
-                  </div>
+                  </div> */}
 
                   <div className="flex items-center gap-3 rounded-2xl border border-slate-200/70 p-4 transition-colors dark:border-slate-800 dark:bg-slate-900/70">
                     <Mail className="h-4 w-4 text-sky-700 dark:text-sky-300" />
